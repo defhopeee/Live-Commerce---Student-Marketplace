@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIBS College Live Commerce - Student Marketplace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1E3A8A;
+      --secondary: #DC2626;
+      --accent: #F59E0B;
+      --success: #059669;
+      --bg-dark: #0F172A;
+      --bg-card: #1E293B;
+      --text-primary: #F1F5F9;
+      --text-secondary: #94A3B8;
+      --border: #334155;
+      --nibs-blue: #1E3A8A;
+      --nibs-red: #DC2626;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    .nav-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10, 14, 39, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      padding: 1rem 2rem;
+    }
+
+    .nav-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .logo-icon {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, var(--nibs-blue), var(--nibs-red));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 1.3rem;
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .logo-main {
+      font-size: 1.3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--nibs-blue), var(--nibs-red));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo-sub {
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-tab {
+      padding: 0.5rem 0;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .nav-tab.active {
+      color: var(--nibs-blue);
+    }
+
+    .nav-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--nibs-blue);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.95rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--nibs-blue), #2563EB);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text-primary);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--nibs-blue);
+      background: rgba(30, 58, 138, 0.1);
+    }
+
+    /* Main Content */
+    .main-container {
+      margin-top: 80px;
+      padding: 2rem;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Video Feed - TikTok Style */
+    .video-feed {
+      display: none;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .video-feed.active {
+      display: flex;
+    }
+
+    .video-card {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .video-thumbnail {
+      width: 100%;
+      aspect-ratio: 9/16;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 4rem;
+    }
+
+    .live-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: #FF0000;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      animation: livePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      animation: blink 1s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .viewers-count {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .video-actions {
+      position: absolute;
+      right: 1rem;
+      bottom: 8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .action-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .action-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+
+    .action-count {
+      font-size: 0.8rem;
+      text-align: center;
+      margin-top: 0.25rem;
+      font-weight: 600;
+    }
+
+    .video-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    }
+
+    .seller-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .seller-avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border: 3px solid white;
+    }
+
+    .seller-name {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .follow-btn {
+      margin-left: auto;
+      padding: 0.5rem 1.25rem;
+      background: var(--nibs-blue);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .follow-btn:hover {
+      background: #2563EB;
+      transform: scale(1.05);
+    }
+
+    .video-description {
+      color: white;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .product-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(245, 158, 11, 0.95);
+      color: var(--bg-dark);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .product-tag:hover {
+      background: var(--accent);
+      transform: scale(1.05);
+    }
+
+    /* Live Stream Grid */
+    .live-grid {
+      display: none;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .live-grid.active {
+      display: grid;
+    }
+
+    .live-stream-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.3s;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .live-stream-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--nibs-blue);
+      box-shadow: 0 10px 30px rgba(30, 58, 138, 0.25);
+    }
+
+    .stream-thumbnail {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: white;
+    }
+
+    .stream-info {
+      padding: 1rem;
+    }
+
+    .stream-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .stream-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    /* Products Section */
+    .products-section {
+      display: none;
+    }
+
+    .products-section.active {
+      display: block;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .product-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+      cursor: pointer;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--nibs-blue);
+      box-shadow: 0 10px 30px rgba(30, 58, 138, 0.25);
+    }
+
+    .product-image {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 3rem;
+      position: relative;
+    }
+
+    .discount-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #FF0000;
+      color: white;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    .product-info {
+      padding: 1.25rem;
+    }
+
+    .product-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .product-price {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .current-price {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--nibs-blue);
+    }
+
+    .original-price {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      text-decoration: line-through;
+    }
+
+    .add-to-cart {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--nibs-blue);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .add-to-cart:hover {
+      background: #2563EB;
+      transform: scale(1.02);
+    }
+
+    /* Go Live Section */
+    .go-live-section {
+      display: none;
+      max-width: 800px;
+      margin: 2rem auto;
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 3rem;
+      border: 1px solid var(--border);
+    }
+
+    .go-live-section.active {
+      display: block;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg-dark);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-family: 'Outfit', sans-serif;
+      transition: all 0.3s;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--nibs-blue);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .camera-preview {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--bg-dark);
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed var(--border);
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    .start-live-btn {
+      width: 100%;
+      padding: 1.25rem;
+      background: linear-gradient(135deg, #FF0000, #FF4444);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .start-live-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+    }
+
+    /* Shopping Cart */
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--nibs-red);
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .nav-tabs {
+        display: none;
+      }
+
+      .nav-actions {
+        gap: 0.5rem;
+      }
+
+      .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      .main-container {
+        padding: 1rem;
+      }
+
+      .products-grid,
+      .live-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+      }
+
+      .go-live-section {
+        padding: 1.5rem;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+    }
+
+    /* Statistics Dashboard */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--nibs-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(30, 58, 138, 0.2);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--nibs-blue);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Kenya-specific */
+    .mpesa-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--success);
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .payment-methods {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .payment-badge {
+      padding: 0.5rem 1rem;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--nibs-blue), var(--nibs-red));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav-container">
+    <div class="nav-content">
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="logo-text">
+          <span class="logo-main">NIBS College</span>
+          <span class="logo-sub">Student Marketplace</span>
+        </div>
+      </div>
+      
+      <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="feed">
+          <i class="fas fa-home"></i> For You
+        </button>
+        <button class="nav-tab" data-tab="live">
+          <i class="fas fa-video"></i> Live Now
+        </button>
+        <button class="nav-tab" data-tab="products">
+          <i class="fas fa-shopping-bag"></i> Shop
+        </button>
+        <button class="nav-tab" data-tab="go-live">
+          <i class="fas fa-broadcast-tower"></i> Start Selling
+        </button>
+      </div>
+
+      <div class="nav-actions">
+        <div class="cart-icon">
+          <i class="fas fa-shopping-cart" style="font-size: 1.2rem;"></i>
+          <div class="cart-badge">3</div>
+        </div>
+        <button class="btn btn-outline">
+          <i class="fas fa-user"></i> Login
+        </button>
+        <button class="btn btn-primary">
+          <i class="fas fa-store"></i> Sell Now
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    
+    <!-- Video Feed (For You) -->
+    <section class="video-feed active" id="feed">
+      <div class="video-card">
+        <div class="video-thumbnail">
+          <i class="fas fa-mobile-alt" style="font-size: 5rem;"></i>
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <div class="viewers-count"><i class="fas fa-eye"></i> 1,234</div>
+          
+          <div class="video-actions">
+            <div>
+              <button class="action-btn"><i class="fas fa-heart"></i></button>
+              <div class="action-count">12.5K</div>
+            </div>
+            <div>
+              <button class="action-btn"><i class="fas fa-comment"></i></button>
+              <div class="action-count">856</div>
+            </div>
+            <div>
+              <button class="action-btn"><i class="fas fa-share"></i></button>
+              <div class="action-count">234</div>
+            </div>
+            <div>
+              <button class="action-btn"><i class="fas fa-bookmark"></i></button>
+            </div>
+          </div>
+
+          <div class="video-info">
+            <div class="seller-info">
+              <div class="seller-avatar"></div>
+              <div>
+                <div class="seller-name">TechHub Student Store</div>
+                <div style="color: rgba(255,255,255,0.7); font-size: 0.85rem;">@nibstechhub</div>
+              </div>
+              <button class="follow-btn"><i class="fas fa-plus"></i> Follow</button>
+            </div>
+            
+            <div class="video-description">
+              <i class="fas fa-fire"></i> New Samsung Galaxy S25 Ultra! Special student discount. 
+              Free M-PESA payments! <i class="fas fa-flag" style="color: #006B3E;"></i>
+            </div>
+            
+            <div class="product-tag">
+              <i class="fas fa-shopping-bag"></i> KES 89,999 • Shop Now
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumbnail" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+          <i class="fas fa-tshirt" style="font-size: 5rem;"></i>
+          <div class="viewers-count"><i class="fas fa-eye"></i> 856</div>
+          
+          <div class="video-actions">
+            <div>
+              <button class="action-btn"><i class="fas fa-heart"></i></button>
+              <div class="action-count">8.2K</div>
+            </div>
+            <div>
+              <button class="action-btn"><i class="fas fa-comment"></i></button>
+              <div class="action-count">423</div>
+            </div>
+            <div>
+              <button class="action-btn"><i class="fas fa-share"></i></button>
+              <div class="action-count">156</div>
+            </div>
+            <div>
+              <button class="action-btn"><i class="fas fa-bookmark"></i></button>
+            </div>
+          </div>
+
+          <div class="video-info">
+            <div class="seller-info">
+              <div class="seller-avatar" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+              <div>
+                <div class="seller-name">Fashion NIBS</div>
+                <div style="color: rgba(255,255,255,0.7); font-size: 0.85rem;">@nibsfashion</div>
+              </div>
+              <button class="follow-btn"><i class="fas fa-plus"></i> Follow</button>
+            </div>
+            
+            <div class="video-description">
+              <i class="fas fa-sparkles"></i> Latest campus fashion trends! 
+              Student-friendly prices <i class="fas fa-tags"></i>
+            </div>
+            
+            <div class="product-tag">
+              <i class="fas fa-shopping-bag"></i> From KES 2,500 • Browse Collection
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Streams Grid -->
+    <section class="live-grid" id="live">
+      <div class="stats-grid" style="grid-column: 1 / -1;">
+        <div class="stat-card">
+          <div class="stat-value">47</div>
+          <div class="stat-label"><i class="fas fa-video"></i> Live Streams Now</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">12.5K</div>
+          <div class="stat-label"><i class="fas fa-users"></i> Total Viewers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">KES 2.4M</div>
+          <div class="stat-label"><i class="fas fa-coins"></i> Sales Today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">856</div>
+          <div class="stat-label"><i class="fas fa-store"></i> Active Sellers</div>
+        </div>
+      </div>
+
+      <div class="live-stream-card">
+        <div class="stream-thumbnail">
+          <i class="fas fa-laptop" style="font-size: 4rem;"></i>
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <div class="viewers-count"><i class="fas fa-eye"></i> 2,341</div>
+        </div>
+        <div class="stream-info">
+          <div class="stream-title"><i class="fas fa-fire"></i> Flash Sale - Electronics Mega Deal!</div>
+          <div class="stream-meta">
+            <span><i class="fas fa-user-graduate"></i> NIBS TechHub</span>
+            <span>•</span>
+            <span class="mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="live-stream-card">
+        <div class="stream-thumbnail" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+          <i class="fas fa-tshirt" style="font-size: 4rem;"></i>
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <div class="viewers-count"><i class="fas fa-eye"></i> 1,876</div>
+        </div>
+        <div class="stream-info">
+          <div class="stream-title">Latest Campus Fashion - 50% OFF</div>
+          <div class="stream-meta">
+            <span><i class="fas fa-user-graduate"></i> NIBS Fashion Store</span>
+            <span>•</span>
+            <span class="mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="live-stream-card">
+        <div class="stream-thumbnail" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+          <i class="fas fa-book" style="font-size: 4rem;"></i>
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <div class="viewers-count"><i class="fas fa-eye"></i> 945</div>
+        </div>
+        <div class="stream-info">
+          <div class="stream-title">Textbooks & Study Materials</div>
+          <div class="stream-meta">
+            <span><i class="fas fa-user-graduate"></i> NIBS Bookstore</span>
+            <span>•</span>
+            <span class="mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="live-stream-card">
+        <div class="stream-thumbnail" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+          <i class="fas fa-utensils" style="font-size: 4rem;"></i>
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <div class="viewers-count"><i class="fas fa-eye"></i> 1,523</div>
+        </div>
+        <div class="stream-info">
+          <div class="stream-title">Campus Food Delivery Service</div>
+          <div class="stream-meta">
+            <span><i class="fas fa-user-graduate"></i> NIBS Eats</span>
+            <span>•</span>
+            <span class="mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="live-stream-card">
+        <div class="stream-thumbnail" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+          <i class="fas fa-dumbbell" style="font-size: 4rem;"></i>
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <div class="viewers-count"><i class="fas fa-eye"></i> 3,124</div>
+        </div>
+        <div class="stream-info">
+          <div class="stream-title">Sports & Fitness Gear</div>
+          <div class="stream-meta">
+            <span><i class="fas fa-user-graduate"></i> NIBS Sports</span>
+            <span>•</span>
+            <span class="mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="live-stream-card">
+        <div class="stream-thumbnail" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+          <i class="fas fa-briefcase" style="font-size: 4rem;"></i>
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+          <div class="viewers-count"><i class="fas fa-eye"></i> 678</div>
+        </div>
+        <div class="stream-info">
+          <div class="stream-title">Professional Attire & Accessories</div>
+          <div class="stream-meta">
+            <span><i class="fas fa-user-graduate"></i> NIBS Professional</span>
+            <span>•</span>
+            <span class="mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+      <div class="section-header">
+        <h1 class="section-title">NIBS Student Marketplace</h1>
+        <p class="section-subtitle">Exclusive deals for NIBS College students</p>
+      </div>
+
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-image">
+            <i class="fas fa-laptop" style="font-size: 4rem;"></i>
+            <div class="discount-badge">-35%</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">HP Laptop - Student Edition</div>
+            <div class="product-price">
+              <span class="current-price">KES 45,999</span>
+              <span class="original-price">KES 70,760</span>
+            </div>
+            <div class="mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA Available</div>
+            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <i class="fas fa-book" style="font-size: 4rem;"></i>
+            <div class="discount-badge">-50%</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Business Management Textbook</div>
+            <div class="product-price">
+              <span class="current-price">KES 1,500</span>
+              <span class="original-price">KES 3,000</span>
+            </div>
+            <div class="mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA Available</div>
+            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <i class="fas fa-headphones" style="font-size: 4rem;"></i>
+            <div class="discount-badge">-25%</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Wireless Study Headphones</div>
+            <div class="product-price">
+              <span class="current-price">KES 3,750</span>
+              <span class="original-price">KES 5,000</span>
+            </div>
+            <div class="mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA Available</div>
+            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-image" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+            <i class="fas fa-backpack" style="font-size: 4rem;"></i>
+            <div class="discount-badge">-40%</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Premium Student Backpack</div>
+            <div class="product-price">
+              <span class="current-price">KES 2,999</span>
+              <span class="original-price">KES 4,998</span>
+            </div>
+            <div class="mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA Available</div>
+            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-image" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+            <i class="fas fa-utensils" style="font-size: 4rem;"></i>
+            <div class="discount-badge">-30%</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Campus Meal Plan - Weekly</div>
+            <div class="product-price">
+              <span class="current-price">KES 1,750</span>
+              <span class="original-price">KES 2,500</span>
+            </div>
+            <div class="mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA Available</div>
+            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-image" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+            <i class="fas fa-pen" style="font-size: 4rem;"></i>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Stationery Bundle Pack</div>
+            <div class="product-price">
+              <span class="current-price">KES 899</span>
+            </div>
+            <div class="mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA Available</div>
+            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Go Live Section -->
+    <section class="go-live-section" id="go-live">
+      <div class="section-header">
+        <h1 class="section-title">Start Selling on NIBS Live</h1>
+        <p class="section-subtitle">Connect with fellow students and showcase your products</p>
+      </div>
+
+      <form id="liveForm">
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-heading"></i> Stream Title</label>
+          <input type="text" class="form-input" placeholder="e.g., Student Flash Sale - 50% OFF Everything!" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-align-left"></i> Description</label>
+          <textarea class="form-textarea" placeholder="Tell your fellow NIBS students what you'll be showing..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-th-large"></i> Category</label>
+          <select class="form-select">
+            <option>Electronics & Gadgets</option>
+            <option>Textbooks & Study Materials</option>
+            <option>Fashion & Clothing</option>
+            <option>Campus Food & Snacks</option>
+            <option>Sports & Fitness</option>
+            <option>Stationery & Supplies</option>
+            <option>Room Decor & Furniture</option>
+            <option>Professional Attire</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-box"></i> Featured Products (Optional)</label>
+          <input type="text" class="form-input" placeholder="Add product names or codes">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-video"></i> Camera Preview</label>
+          <div class="camera-preview">
+            <i class="fas fa-camera" style="font-size: 3rem; color: var(--text-secondary);"></i>
+            <p style="margin-top: 1rem;">Camera will activate when you go live</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-credit-card"></i> Payment Methods</label>
+          <div class="payment-methods">
+            <div class="payment-badge mpesa-badge"><i class="fas fa-mobile-alt"></i> M-PESA</div>
+            <div class="payment-badge"><i class="fas fa-credit-card"></i> Card Payment</div>
+            <div class="payment-badge"><i class="fas fa-university"></i> Bank Transfer</div>
+          </div>
+        </div>
+
+        <button type="submit" class="start-live-btn">
+          <div class="live-dot"></div>
+          <i class="fas fa-broadcast-tower"></i> Go Live Now
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+  <script>
+    // Tab Navigation
+    const tabs = document.querySelectorAll('.nav-tab');
+    const sections = {
+      'feed': document.getElementById('feed'),
+      'live': document.getElementById('live'),
+      'products': document.getElementById('products'),
+      'go-live': document.getElementById('go-live')
+    };
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs
+        tabs.forEach(t => t.classList.remove('active'));
+        // Add active class to clicked tab
+        tab.classList.add('active');
+        
+        // Hide all sections
+        Object.values(sections).forEach(section => section.classList.remove('active'));
+        
+        // Show selected section
+        const targetTab = tab.dataset.tab;
+        sections[targetTab].classList.add('active');
+      });
+    });
+
+    // Shopping Cart
+    let cartCount = 3;
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    const cartBadge = document.querySelector('.cart-badge');
+
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cartCount++;
+        cartBadge.textContent = cartCount;
+        button.innerHTML = '<i class="fas fa-check"></i> Added to Cart';
+        button.style.background = 'var(--success)';
+        
+        setTimeout(() => {
+          button.innerHTML = '<i class="fas fa-shopping-cart"></i> Add to Cart';
+          button.style.background = 'var(--nibs-blue)';
+        }, 2000);
+      });
+    });
+
+    // Follow Button
+    const followButtons = document.querySelectorAll('.follow-btn');
+    followButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (button.innerHTML.includes('Follow')) {
+          button.innerHTML = '<i class="fas fa-check"></i> Following';
+          button.style.background = 'var(--success)';
+        } else {
+          button.innerHTML = '<i class="fas fa-plus"></i> Follow';
+          button.style.background = 'var(--nibs-blue)';
+        }
+      });
+    });
+
+    // Like Button
+    const likeButtons = document.querySelectorAll('.video-actions .action-btn');
+    likeButtons.forEach(button => {
+      const icon = button.querySelector('i');
+      if (icon && icon.classList.contains('fa-heart')) {
+        button.addEventListener('click', () => {
+          const countEl = button.nextElementSibling;
+          if (countEl && countEl.classList.contains('action-count')) {
+            let count = parseFloat(countEl.textContent);
+            count += 0.001;
+            countEl.textContent = count.toFixed(1) + 'K';
+            icon.style.color = '#DC2626';
+          }
+        });
+      }
+    });
+
+    // Live Stream Cards Click
+    const streamCards = document.querySelectorAll('.live-stream-card');
+    streamCards.forEach(card => {
+      card.addEventListener('click', () => {
+        // Switch to feed view to show the live stream
+        tabs[0].click();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    // Product Cards Click
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('add-to-cart')) {
+          alert('Product details would open here!');
+        }
+      });
+    });
+
+    // Go Live Form
+    const liveForm = document.getElementById('liveForm');
+    liveForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('🎉 Going live on NIBS College Marketplace! Your stream is starting...');
+      // In a real app, this would initialize the camera and start streaming
+    });
+
+    // Simulate live viewer count changes
+    setInterval(() => {
+      const viewerCounts = document.querySelectorAll('.viewers-count');
+      viewerCounts.forEach(count => {
+        const currentCount = parseInt(count.textContent.replace(/[^0-9]/g, ''));
+        const change = Math.floor(Math.random() * 20) - 5;
+        const newCount = Math.max(0, currentCount + change);
+        count.textContent = `👁️ ${newCount.toLocaleString()}`;
+      });
+    }, 3000);
+  </script>
+</body>
+</html>
